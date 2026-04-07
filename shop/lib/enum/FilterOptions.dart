@@ -1,0 +1,4 @@
+enum FilterOptions {
+  FAVORITE,
+  ALL,
+}
