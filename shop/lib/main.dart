@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/Cart.dart';
-import 'package:shop/models/Order_list.dart';
-import 'package:shop/models/Product_list.dart';
-import 'package:shop/pages/Cart_page.dart';
-import 'package:shop/pages/Product_detail_page.dart';
+import 'package:shop/models/OrderList.dart';
+import 'package:shop/models/ProductList.dart';
+import 'package:shop/pages/CartPage.dart';
+import 'package:shop/pages/ProductDetailPage.dart';
 import 'package:shop/pages/Product_form_page.dart';
-import 'package:shop/pages/Products_overview_page.dart';
-import 'package:shop/pages/Manage_products.dart';
-import 'package:shop/pages/orders_page.dart';
-import 'utils/App_routes.dart';
+import 'package:shop/pages/ProductsOverviewPage.dart';
+import 'package:shop/pages/ManageProducts.dart';
+import 'package:shop/pages/OrdersPage.dart';
+import 'utils/AppRoutes.dart';
 
 void main() {
   runApp(const MyApp());

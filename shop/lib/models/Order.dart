@@ -1,4 +1,4 @@
-import 'package:shop/models/Cart_item.dart';
+import 'package:shop/models/CartItem.dart';
 
 class Order {
   final String id;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop/components/App_drawer.dart';
-import 'package:shop/components/Product_grid.dart';
+import 'package:shop/components/AppDrawer.dart';
+import 'package:shop/components/ProductGrid.dart';
 import 'package:shop/enum/FilterOptions.dart';
 import 'package:shop/models/Cart.dart';
-import 'package:shop/models/Product_list.dart';
-import 'package:shop/utils/App_routes.dart';
+import 'package:shop/models/ProductList.dart';
+import 'package:shop/utils/AppRoutes.dart';
 
 
 class ProductsOverviewPage extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/Cart.dart';
-import 'package:shop/models/Cart_item.dart';
+import 'package:shop/models/CartItem.dart';
 
 class CartItemWidget extends StatelessWidget {
   final CartItem cartItem;
