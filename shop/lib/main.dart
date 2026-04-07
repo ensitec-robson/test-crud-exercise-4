@@ -5,7 +5,7 @@ import 'package:shop/models/OrderList.dart';
 import 'package:shop/models/ProductList.dart';
 import 'package:shop/pages/CartPage.dart';
 import 'package:shop/pages/ProductDetailPage.dart';
-import 'package:shop/pages/Product_form_page.dart';
+import 'package:shop/pages/ProductFormPage.dart';
 import 'package:shop/pages/ProductsOverviewPage.dart';
 import 'package:shop/pages/ManageProducts.dart';
 import 'package:shop/pages/OrdersPage.dart';
