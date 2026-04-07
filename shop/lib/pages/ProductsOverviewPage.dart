@@ -7,10 +7,33 @@ import 'package:shop/models/Cart.dart';
 import 'package:shop/models/ProductList.dart';
 import 'package:shop/utils/AppRoutes.dart';
 
+class ProductsOverviewPage extends StatefulWidget {
+  const ProductsOverviewPage({super.key});
 
-class ProductsOverviewPage extends StatelessWidget {
+  @override
+  State<ProductsOverviewPage> createState() => _ProductsOverviewPageState();
+}
 
-const ProductsOverviewPage({super.key});
+class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
+  bool _isLoading = true;
+  bool _hasError = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() async {
+      try {
+        await Provider.of<ProductList>(context, listen: false).loadProducts();
+      } catch (error) {
+        _hasError = true;
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,45 +41,48 @@ const ProductsOverviewPage({super.key});
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha loja'),
+        title: const Text('Minha loja'),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             itemBuilder: (_) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: FilterOptions.FAVORITE,
                 child: Text('Somente Favoritos'),
-                ),
-                PopupMenuItem(
+              ),
+              const PopupMenuItem(
                 value: FilterOptions.ALL,
                 child: Text('Todos'),
-                ),
-          ],
-          onSelected: (FilterOptions selectedValue) {
-            if (selectedValue == FilterOptions.FAVORITE) {
-              provider.showFavoriteOnly();
-            } else {
-              provider.showAll();
-            }
-          },
-          ),
-            Consumer<Cart>(
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.CART);
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                ),
-              builder: (ctx, cart, child) => Badge(
-                label: Text(cart.itemsCount.toString()),
-                child: child!,
               ),
-            )
-        ]
+            ],
+            onSelected: (FilterOptions selectedValue) {
+              if (selectedValue == FilterOptions.FAVORITE) {
+                provider.showFavoriteOnly();
+              } else {
+                provider.showAll();
+              }
+            },
+          ),
+          Consumer<Cart>(
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.CART);
+              },
+              icon: const Icon(Icons.shopping_cart),
+            ),
+            builder: (ctx, cart, child) => Badge(
+              label: Text(cart.itemsCount.toString()),
+              child: child!,
+            ),
+          ),
+        ],
       ),
-      body: ProductGrid(),
       drawer: AppDrawer(),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _hasError
+              ? const Center(child: Text('Erro ao carregar produtos'))
+              : const ProductGrid(),
     );
   }
 }
-

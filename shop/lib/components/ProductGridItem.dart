@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/Cart.dart';
 import 'package:shop/models/Product.dart';
+import 'package:shop/models/ProductList.dart';
 import 'package:shop/utils/AppRoutes.dart';
 
 class ProductGridItem extends StatelessWidget {
@@ -17,9 +18,10 @@ class ProductGridItem extends StatelessWidget {
           footer: GridTileBar(
               backgroundColor: Colors.black87,
               leading: IconButton(
-                onPressed: () {
-                  product.toggleFavorite();
-                },
+                onPressed: () async {
+                    await Provider.of<ProductList>(context, listen: false)
+                        .updateFavorite(product);
+                  },
                 icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border ),
                 color: Theme.of(context).colorScheme.error,
                 ),
