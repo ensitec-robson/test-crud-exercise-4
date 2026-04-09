@@ -9,6 +9,7 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   final Product product = ModalRoute.of(context)!.settings.arguments as Product;
+  final isDesktop = MediaQuery.of(context).size.width >= 900;
     return Scaffold(
       appBar: AppBar(
         title: Text(product.title),
@@ -16,12 +17,14 @@ class ProductDetailPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
+            Center(
+              child: Container(
+                height: 300,
+                width: isDesktop ? 400 : double.infinity,
+                child: Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
               SizedBox(height: 10),

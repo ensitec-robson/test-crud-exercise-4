@@ -11,10 +11,43 @@ class ManageProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductList products = Provider.of(context);
+
+        final isDesktop = MediaQuery.of(context).size.width >= 900;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Gerenciar Produtos'),
         actions: [
+                  if (isDesktop) ...[
+          TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
+                },
+                child: const Text(
+                  'Loja',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
+              },
+              child: const Text(
+                'Pedidos',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCTS);
+              },
+              child: const Text(
+                'Gerenciar Produtos',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            ],
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
@@ -25,7 +58,7 @@ class ManageProducts extends StatelessWidget {
             )
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: isDesktop ? null : AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: ListView.builder(

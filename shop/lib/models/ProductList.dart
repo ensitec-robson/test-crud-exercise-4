@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:shop/models/Product.dart';
 
 class ProductList with ChangeNotifier {
-  final String _baseUrl = 'http://10.0.2.2:8080/products';
+  final String _baseUrl = Platform.isAndroid
+      ? 'http://10.0.2.2:8080/products'
+      : 'http://localhost:8080/products';
 
   List<Product> _items = [];
   bool _showFavoriteOnly = false;
@@ -28,7 +31,6 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Carregar produtos
   Future<void> loadProducts() async {
     final response = await http.get(Uri.parse(_baseUrl));
 
@@ -70,7 +72,6 @@ class ProductList with ChangeNotifier {
     }
   }
 
-  /// CREATE
   Future<void> addProduct(Product product) async {
     final response = await http.post(
       Uri.parse(_baseUrl),
@@ -104,7 +105,6 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
-  /// UPDATE
   Future<void> updateProduct(Product product) async {
     final index = _items.indexWhere((p) => p.id == product.id);
 
@@ -141,7 +141,6 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
-  /// DELETE
   Future<void> deleteProduct(Product product) async {
     final index = _items.indexWhere((p) => p.id == product.id);
 
@@ -163,7 +162,6 @@ class ProductList with ChangeNotifier {
     }
   }
 
-  /// FAVORITE (PATCH)
   Future<void> updateFavorite(Product product) async {
     final index = _items.indexWhere((p) => p.id == product.id);
 

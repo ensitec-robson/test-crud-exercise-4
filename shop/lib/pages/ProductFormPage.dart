@@ -78,6 +78,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDesktop = MediaQuery.of(context).size.width >= 900;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulário de Produto'),
@@ -197,8 +198,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     ),
                   ),
                   Container(
-                    height: 100,
-                    width: 100,
+                    height: isDesktop ? 180 : 100,
+                    width: isDesktop ? 180 : 100,
                     margin: const EdgeInsets.only(
                       top: 10,
                       left: 10,

@@ -39,10 +39,33 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   Widget build(BuildContext context) {
     final provider = Provider.of<ProductList>(context);
 
+    final isDesktop = MediaQuery.of(context).size.width >= 900;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Minha loja'),
         actions: [
+        if (isDesktop) ...[
+              TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
+              },
+              child: const Text(
+                'Pedidos',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCTS);
+              },
+              child: const Text(
+                'Gerenciar Produtos',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            ],
           PopupMenuButton(
             icon: const Icon(Icons.more_vert),
             itemBuilder: (_) => [
@@ -77,7 +100,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: isDesktop ? null : AppDrawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _hasError

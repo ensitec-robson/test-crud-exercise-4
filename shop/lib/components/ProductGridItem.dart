@@ -31,20 +31,28 @@ class ProductGridItem extends StatelessWidget {
                 ),
               trailing: IconButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                    content: Text('Produto adicionado com sucesso.'),
-                    duration: Duration(seconds: 1),
-                    action: SnackBarAction(
-                      label: 'DESFAZER',
-                      onPressed: () {
-                        cart.removeSingleItem(product.id);
-                      }
-                    ),
-                  )
-                );
                   cart.addItem(product);
-                  // print(cart.itemsCount);
+
+                  final messenger = ScaffoldMessenger.of(context);
+
+                  messenger.hideCurrentSnackBar();
+
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: const Text('Produto adicionado com sucesso.'),
+                      duration: const Duration(seconds: 1),
+                      action: SnackBarAction(
+                        label: 'DESFAZER',
+                        onPressed: () {
+                          cart.removeSingleItem(product.id);
+                        },
+                      ),
+                    ),
+                  );
+
+                  Future.delayed(const Duration(seconds: 1), () {
+                    messenger.hideCurrentSnackBar();
+                  });
                 },
                 icon: Icon(Icons.shopping_cart),
                 color: Theme.of(context).colorScheme.error,
