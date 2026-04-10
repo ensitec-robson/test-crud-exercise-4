@@ -12,54 +12,55 @@ class ManageProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProductList products = Provider.of(context);
 
-        final isDesktop = MediaQuery.of(context).size.width >= 900;
+    final isDesktop = MediaQuery.of(context).size.width >= 900;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gerenciar Produtos'),
+        title: isDesktop ?
+        Padding(
+          padding: EdgeInsets.only(left: 350),
+          child: Text('Gerenciar Produtos')
+          ) : Text('Gerenciar Produtos'),
         actions: [
-                  if (isDesktop) ...[
-          TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
+          Padding(
+            padding: EdgeInsets.only(right: isDesktop ? 120 : 0),
+            child: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.PRODUCTS_FORM
+                  );
                 },
-                child: const Text(
-                  'Loja',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-              TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
-              },
-              child: const Text(
-                'Pedidos',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCTS);
-              },
-              child: const Text(
-                'Gerenciar Produtos',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ],
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                AppRoutes.PRODUCTS_FORM
-                );
-              },
-            )
+          )
         ],
       ),
       drawer: isDesktop ? null : AppDrawer(),
-      body: Padding(
+      body: isDesktop
+    ? Row(
+        children: [
+          const SizedBox(
+            width: 250,
+            child: AppDrawer(),
+          ),
+          const VerticalDivider(width: 1),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 110),
+              child: ListView.builder(
+                itemCount: products.itemsCount,
+                itemBuilder: (ctx, i) => Column(
+                  children: [
+                    ProductItem(products.items[i]),
+                    Divider(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      )
+    : Padding(
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
           itemCount: products.itemsCount,
@@ -70,7 +71,7 @@ class ManageProducts extends StatelessWidget {
             ],
           ),
         ),
-        ),
+      ),
     );
   }
 }

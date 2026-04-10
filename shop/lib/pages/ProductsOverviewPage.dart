@@ -43,69 +43,77 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Minha loja'),
+        title: isDesktop
+          ? const Padding(
+              padding: EdgeInsets.only(left: 350),
+              child: Text('Minha loja'),
+            )
+          : const Text('Minha loja'),
         actions: [
-        if (isDesktop) ...[
-              TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
-              },
-              child: const Text(
-                'Pedidos',
-                style: TextStyle(color: Colors.white),
+              Padding(
+                padding: EdgeInsets.only(right: isDesktop ? 120 : 0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    PopupMenuButton(
+                      icon: const Icon(Icons.more_vert),
+                      itemBuilder: (_) => [
+                        const PopupMenuItem(
+                          value: FilterOptions.FAVORITE,
+                          child: Text('Somente Favoritos'),
+                        ),
+                        const PopupMenuItem(
+                          value: FilterOptions.ALL,
+                          child: Text('Todos'),
+                        ),
+                      ],
+                      onSelected: (FilterOptions selectedValue) {
+                        if (selectedValue == FilterOptions.FAVORITE) {
+                          provider.showFavoriteOnly();
+                        } else {
+                          provider.showAll();
+                        }
+                      },
+                    ),
+                    Consumer<Cart>(
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(AppRoutes.CART);
+                        },
+                        icon: const Icon(Icons.shopping_cart),
+                      ),
+                      builder: (ctx, cart, child) => Badge(
+                        label: Text(cart.itemsCount.toString()),
+                        child: child!,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCTS);
-              },
-              child: const Text(
-                'Gerenciar Produtos',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
             ],
-          PopupMenuButton(
-            icon: const Icon(Icons.more_vert),
-            itemBuilder: (_) => [
-              const PopupMenuItem(
-                value: FilterOptions.FAVORITE,
-                child: Text('Somente Favoritos'),
-              ),
-              const PopupMenuItem(
-                value: FilterOptions.ALL,
-                child: Text('Todos'),
-              ),
-            ],
-            onSelected: (FilterOptions selectedValue) {
-              if (selectedValue == FilterOptions.FAVORITE) {
-                provider.showFavoriteOnly();
-              } else {
-                provider.showAll();
-              }
-            },
-          ),
-          Consumer<Cart>(
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.CART);
-              },
-              icon: const Icon(Icons.shopping_cart),
-            ),
-            builder: (ctx, cart, child) => Badge(
-              label: Text(cart.itemsCount.toString()),
-              child: child!,
-            ),
-          ),
-        ],
       ),
       drawer: isDesktop ? null : AppDrawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _hasError
               ? const Center(child: Text('Erro ao carregar produtos'))
-              : const ProductGrid(),
-    );
+                : isDesktop
+                ? Row(
+                children: [
+                  const SizedBox(
+                    width: 250,
+                    child: AppDrawer(),
+                  ),
+                  const VerticalDivider(width: 1),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 110),
+                      child: ProductGrid(),
+                    ),
+                  ),
+                ],
+              )
+                : const ProductGrid(),
+                );
   }
 }
